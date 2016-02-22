@@ -9,7 +9,9 @@
   "author": "Safet Berberi",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "express": "^4.13.4",
+    "mongoose": "^4.4.4",
     "morgan": "^1.7.0"
   }
 }
