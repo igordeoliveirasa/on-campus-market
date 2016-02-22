@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var bcrypt = require('brcypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 var Schema = mongoose.Schema;
 
 //user schema 
@@ -16,7 +16,7 @@ var UserSchema = new mongoose.Schema({
 	history: [{
 		date: Date,
 		paid: {type: Number, default: 0},
-		item: {type: Schema.Types.ObjectrId, ref: ''}
+		item: {type: Schema.Types.ObjectId, ref: ''}
 	}]
 });
 
