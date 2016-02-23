@@ -4,13 +4,18 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var ejs = require('ejs');
 var engine = require('ejs-mate');
+var session = require('express-session');
+var cookieParser = require('cookieParser');
+var flash = require('express-flash');
+var MongoStore = require('connect-mongo')(session);//stores the session server side
+var passport = require('passport');
 
-
+var secret = require('/config/config');
 var User = require('./models/user');
 
 var app = express();
 
-mongoose.connect('mongodb://root:abc123@ds013908.mongolab.com:13908/oncampusmarket', function(err) {
+mongoose.connect(secret.database, function(err) {
 	if (err) {
 		console.log(err);
 	} else {
@@ -25,6 +30,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
+
+app.use({
+	resave: true,
+	saveUnitialized: true,
+	secret: secret.secretKey,
+	store= new MongoStore({url: secret.database, autoreconnect:true})
+});
+app.use(flash());
+
+
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 
@@ -34,7 +49,7 @@ var userRoutes = require('./routes/user');
 app.use(mainRoutes);
 app.use(userRoutes);
 
-app.listen(3000, function(err) {
+app.listen(secret.port, function(err) {
 	if (err) {
 		throw err;
 	}

@@ -31,7 +31,7 @@ UserSchema.pre('save', function(next) {
 			return next(err);
 		}
 
-		brycpt.hash(user.password, salt, null, function (hash) {
+		bcrypt.hash(user.password, salt, null, function (hash) {
 			user.password = hash;
 			next();
 		});
