@@ -1,8 +1,29 @@
 var router = require('express').Router();
 var User = require('../models/user');
+var passport = require('passport');
+var passportConf = require('../config/passport');
+
+router.get('/login', function(req,res) {
+	if(req.user) {
+		return res.redirect('/');
+	}
+	res.render('accounts/login', { message: req.flash('loginMessage')});
+});
 
 
-router.post('signup', function() {
+router.post('/login', passport.authenticate('local-login', {
+	successRedirect: '/profile',
+	failureRedirect: '/login',
+	failureFlash: true
+}));
+
+router.get('/profile', function(req,res) {
+	res.json(req.user);
+});
+
+
+
+router.post('signup', function(req,res,next) {
 	var user = new User();
 
 	user.profile.name = req.body.name;

@@ -5,21 +5,21 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs');
 var engine = require('ejs-mate');
 var session = require('express-session');
-var cookieParser = require('cookieParser');
+var cookieParser = require('cookie-parser');
 var flash = require('express-flash');
-var MongoStore = require('connect-mongo')(session);//stores the session server side
+var MongoStore = require('connect-mongo/es5')(session);//stores the session server side
 var passport = require('passport');
 
-var secret = require('/config/config');
+var config = require('./config/config.js');
 var User = require('./models/user');
 
 var app = express();
 
-mongoose.connect(secret.database, function(err) {
+mongoose.connect(config.database, function(err) {
 	if (err) {
 		console.log(err);
 	} else {
-		console.log("Coonnected to the database");
+		console.log("Connected to the database");
 	}
 });
 
@@ -31,14 +31,15 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 
-app.use({
+app.use(session ({
 	resave: true,
-	saveUnitialized: true,
-	secret: secret.secretKey,
-	store= new MongoStore({url: secret.database, autoreconnect:true})
-});
+	saveUninitialized: true,
+	secret: "Safet@1212121",
+	store: new MongoStore({url: config.database, autoReconnect:true})
+}));
 app.use(flash());
-
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
@@ -49,7 +50,7 @@ var userRoutes = require('./routes/user');
 app.use(mainRoutes);
 app.use(userRoutes);
 
-app.listen(secret.port, function(err) {
+app.listen(config.port, function(err) {
 	if (err) {
 		throw err;
 	}
