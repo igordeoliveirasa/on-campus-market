@@ -33,6 +33,24 @@ router.get('/signup', function(req,res) {
 });
 
 
+router.get('/edit-profile', function(req,res,next) {
+	res.render('accounts/edit-profile', {message: req.flash('success')});
+});
+
+router.post('/edit-profile', function (req,res,next) {
+	user.findOne({_id: req.user._id}, function (errr,user) {
+		if (req.body.name) user.profile.name = req.body.name;
+		if (req.body.address) user.address = req.body.address;
+
+		user.save(function (err) {
+			if(err) return next(err);
+			req.flash('success', 'Successfully edited your profile!');
+			return res.redirect('/edit-profile');
+		});
+	});
+});
+
+
 
 router.post('/signup', function(req,res,next) {
 	var user = new User();
@@ -40,6 +58,7 @@ router.post('/signup', function(req,res,next) {
 	user.profile.name = req.body.name;
 	user.email = req.body.email;
 	user.password = req.body.password;
+	user.profile.picture = user.gravatar();
 
 	User.findOne({email: req.body.email}, function (err, existingUser) {
 		
@@ -50,9 +69,14 @@ router.post('/signup', function(req,res,next) {
 			console.log(req.body.email + " aleady exists!");
 			return res.redirect('/signup');
 		} else {
+
+			//adds the cookie and session to the server
 			user.save(function (err, user) {
 				if(err) return next(err);
-				res.redirect('/');
+				req.logIn(user, function (err) {
+					if(err) return next(err);
+					res.redirect('/profile');
+				});
 			});
 		}
 	});

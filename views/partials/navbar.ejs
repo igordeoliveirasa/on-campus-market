@@ -12,7 +12,7 @@
 
         <% if(!user) { %>
 
-          <li><a class="dropdow-toggle" data-toggle="dropdown" href="#">Sign up / Login</a>
+          <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Sign up / Login</a>
 
             <ul class="dropdown-menu">
               <li><a href="/signup"> Sign up</a></li>
@@ -22,11 +22,11 @@
           </li>
           <% } else { %>
 
-          <li><a class="dropdow-toggle" data-toggle="dropdown" href="#"><%= user.profile.name %></a>
+          <li><a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= user.email %></a>
 
             <ul class="dropdown-menu">
               <li><a href="/signup"> Sign up</a></li>
-              <li><a href="/login"> Login </a></li>
+              <li><a href="/logout"> Logout </a></li>
             </ul>
 
           </li>
