@@ -12,6 +12,7 @@ var passport = require('passport');
 
 var config = require('./config/config.js');
 var User = require('./models/user');
+var Category = require('./models/category');
 
 var app = express();
 
@@ -43,6 +44,14 @@ app.use(passport.session());
 app.use(function (req,res,next) {
 	res.locals.user = req.user;
 	next();
+});
+
+app.use(function(req,res,next) {
+	Category.find({}, function(err,categories) {
+		if(err) return next(err);
+		res.locals.categories = categories;
+		next();
+	});
 });
 
 app.engine('ejs', engine);
