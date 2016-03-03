@@ -5,7 +5,7 @@
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
           </button>
-          <a class="navbar-brand" href="#">B3ha</a>
+          <a class="navbar-brand" href="/">B3ha</a>
         </div>
 
         <ul class="nav navbar-nav navbar-right">
@@ -16,7 +16,7 @@
             <ul class="dropdown-menu">
              <% for(var i=0; i<categories.length; i++)  { %>
               
-              <li><a><%= categories[i].name %></a></li>
+              <li><a href="/products/<%= categories[i]._id %>"> <%= categories[i].name %></a></li>
 
              <% } %>
             </ul>
