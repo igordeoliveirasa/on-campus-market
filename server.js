@@ -60,10 +60,15 @@ app.set('view engine', 'ejs');
 var mainRoutes = require('./routes/main');
 var userRoutes = require('./routes/user');
 var adminRoutes = require('./routes/admin');
+var apiRoutes = require('./api/api');
 
 app.use(mainRoutes);
 app.use(userRoutes);
 app.use(adminRoutes);
+app.use(apiRoutes);
+
+app.use('/api', apiRoutes);
+
 
 app.listen(config.port, function(err) {
 	if (err) {
