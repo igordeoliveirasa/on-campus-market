@@ -16,6 +16,11 @@ var Category = require('./models/category');
 
 var app = express();
 
+app.use(bodyParser());
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+
 mongoose.connect(config.database, function(err) {
 	if (err) {
 		console.log(err);
@@ -27,10 +32,7 @@ mongoose.connect(config.database, function(err) {
 // middleware
 app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-	extended: true
-}));
+
 
 app.use(session ({
 	resave: true,
