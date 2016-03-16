@@ -4,6 +4,14 @@ var faker = require('faker');
 var Category = require('../models/category');
 var Product = require('../models/product');
 
+router.post('/search', function(req,res,next) {
+	Product.search({
+		query_string: {query: req.body.search_term}
+	}, function(ewrr, results) {
+		if (err) return next(err);
+	});
+});
+
 
 router.get('/:name', function(req, res, next) {
 	async.waterfall([

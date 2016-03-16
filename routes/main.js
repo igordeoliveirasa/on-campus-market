@@ -3,6 +3,26 @@ var User = ('../models/users');
 var Product = require('../models/product');
 
 
+function paginate(req,res,next) {
+	var perPage = 9;
+		var page = req.params.page;
+
+		Product
+		.find()
+		.skip(perPage * page)
+		.limit(perPage)
+		.populate('category')
+		.exec(function(err,products) {
+			Product.count().exec(function(err,count) {
+				if(err) return(err);
+				res.render('main/product-main', {
+					products: products,
+					pages: count/perPage
+				});
+			});
+		});
+
+}
 
 //maps elastic search replica set with the product schema
 Product.createMapping(function(err, mapping) {
@@ -56,8 +76,20 @@ router.post('/search', function(req, res, next) {
 	}
 });
 
-router.get('/', function(req, res) {
-	res.render('main/home');
+router.get('/page/:page', function (req,res,next) {
+	paginate(req,res,next);
+});
+
+router.get('/', function(req, res, next) {
+
+	if(req.user) {
+		paginate(req,res,next);		
+	} else {
+		res.render('main/home');
+	}
+	
+
+
 });
 
 router.get('/about', function(req, res) {

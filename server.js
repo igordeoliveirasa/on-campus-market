@@ -67,8 +67,6 @@ var apiRoutes = require('./api/api');
 app.use(mainRoutes);
 app.use(userRoutes);
 app.use(adminRoutes);
-app.use(apiRoutes);
-
 app.use('/api', apiRoutes);
 
 
